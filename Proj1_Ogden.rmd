@@ -1,0 +1,132 @@
+---
+title: "Scott Ogden: Project 1"
+output: html_document
+---
+
+First load the libraries, text file and clean up some excess lines.
+
+
+Want the data output to be a csv file with the following columns
+
+"Player's Name, Player's State, Total Number of Points, Player's Pre-Rating, and Average Pre Chess Rating of Opponents""
+
+```{r}
+library(RCurl)
+library(foreign)
+library(stringr)
+library(splitstackshape)
+
+url = getURL('https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/tournamentinfo.txt')
+
+data<-readLines("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/tournamentinfo.txt")
+
+data2<-str_replace_all(data[-c(1:4)],"-",'')  ##Removes top rows and --
+
+data3<-data2[lapply(data2,nchar)>0]  ##Removes empty rows (Adapted from http://stackoverflow.com/questions/19023446/remove-empty-elements-from-list-with-character0 )
+
+#Combine rows for each person by subsetting even and on lines
+
+even<-seq(2, nrow(data.frame(data3))+1, by = 2)
+odd<-seq(1, nrow(data.frame(data3))-1, by = 2)
+
+names<-data3[odd]
+second<-data3[even]
+  
+conc<-paste(names,second)
+head(conc,2)
+
+##You can see the data is now row-specific to players.
+
+##Make all columns "|" delemeted
+conc2<-str_replace_all(conc, ">","|")
+conc3<-str_replace_all(conc2,"/ R:","|")
+
+##Get the non-calculated fields
+
+players<-str_trim(str_replace_all(str_extract(conc3, "[[:alpha:]].+?[|]"),"[|]",""))
+
+idno<-str_trim(str_replace_all(str_extract(conc3, "^\\s+(\\d+)\\s+\\|"),"[|]",""))
+
+states<-str_trim(str_replace_all(str_extract(second, "[[:alpha:]].+?[|]"),"[|]",""))
+
+pts<-str_trim(str_replace_all(str_extract(conc3, "[|][:digit:][:punct:][:digit:]"),"[|]",""))
+
+pre<-str_replace_all(str_trim(str_replace_all(str_extract(second, "R:[:space:]+[:digit:]+"),"[|]","")),"R: ","")
+
+##Get Who they played
+
+badguys<-str_replace_all(str_trim(str_replace_all(str_replace_all(str_replace_all(str_trim(str_replace_all(str_extract_all(conc3, "[WDL]{1}[:space:]+[:digit:]+"),"[|]","")),"W",""),"L",""),"D","")),"c","")
+
+
+df<-data.frame(badguys)
+
+y<-cSplit(df, "badguys", ",")
+
+z1<-as.character(y$badguys_1)
+z1<-as.numeric(str_trim(substr(z1,nchar(z1)-4,nchar(z1)-1)))
+
+z2<-as.character(y$badguys_2)
+z2<-as.numeric(str_trim(substr(z2,nchar(z2)-4,nchar(z2)-1)))
+
+z3<-as.character(y$badguys_3)
+z3<-as.numeric(str_trim(substr(z3,nchar(z3)-4,nchar(z3)-1)))
+
+z4<-as.character(y$badguys_4)
+z4<-as.numeric(str_trim(substr(z4,nchar(z4)-4,nchar(z4)-1)))
+
+z5<-as.character(y$badguys_5)
+z5<-(str_trim(substr(z5,nchar(z5)-4,nchar(z5)-1)))
+z5<-as.numeric(substr(z5,1,2))
+
+z6<-as.character(y$badguys_6)
+z6<-str_trim(substr(z6,nchar(z6)-4,nchar(z6)-1))
+z6<-as.numeric(substr(z6,1,2))
+
+z7<-as.character(y$badguys_7)
+z7<-str_trim(substr(z7,nchar(z7)-4,nchar(z7)-2))
+z7<-as.numeric(z7)
+
+opp<-data.frame(z1,z2,z3,z4,z5,z6,z7)
+
+#opp<-data.frame(as.numeric(y$badguys_1),
+ #               as.numeric(y$badguys_2),
+  #              as.numeric(y$badguys_3),
+   #             as.numeric(y$badguys_4),
+    #            as.numeric(y$badguys_5),
+     #           as.numeric(y$badguys_6),
+      #          as.numeric(y$badguys_7)
+                
+       #         )
+
+head(opp,4)
+##We see a list of opponent's ids
+
+##Now: "Lookup" the value of the opponens' score
+
+scoresID<-data.frame(idno,pre)
+##create indexes of matches with match function
+
+index1<-match(opp$z1,scoresID$idno)
+index2<-match(opp$z2,scoresID$idno)
+index3<-match(opp$z3,scoresID$idno)
+index4<-match(opp$z4,scoresID$idno)
+index5<-match(opp$z5,scoresID$idno)
+index6<-match(opp$z6,scoresID$idno)
+index7<-match(opp$z7,scoresID$idno)
+
+oppScore<-data.frame(as.numeric(paste(scoresID[index1,]$pre)),as.numeric(paste(scoresID[index2,]$pre)),as.numeric(paste(scoresID[index3,]$pre)),as.numeric(paste(scoresID[index4,]$pre)),as.numeric(paste(scoresID[index5,]$pre)),as.numeric(paste(scoresID[index6,]$pre)),as.numeric(paste(scoresID[index7,]$pre)))
+
+#We see all the values for each person
+head(oppScore)
+
+# Take row average
+opp_avg<-rowMeans(oppScore,na.rm = TRUE)
+
+##Results to csv
+results<-data.frame("Players_Name"=players,"Players_State" = states,"Total_Points"=pts,"PreRating"=pre,"Avg_Opp_Pre"=opp_avg)
+results
+
+write.csv(results, file = "Project1.csv")
+```
+
+
