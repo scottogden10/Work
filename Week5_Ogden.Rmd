@@ -39,7 +39,7 @@ ggplot()+geom_point(data=alaska,aes(x=alaska$City,y=alaska$on_time/(alaska$delay
 
 ##We'd like to see if this is a significant difference, a fairly reasonable test may be the Chi Square test for independence for each city (adding Yates' correction for continuity when needed)  
 
-##Make tables by city
+##Make tables for each city Where the rows are the airline and the columns are on time and delayed.
 
  LA<-rbind(subset(alaska,alaska$City=="Los.Angeles",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="Los.Angeles",select = c(delayed,on_time)))
  
@@ -56,6 +56,8 @@ ggplot()+geom_point(data=alaska,aes(x=alaska$City,y=alaska$on_time/(alaska$delay
  
 options(scipen = 999)
  
+#Calculate chi-square test for independence on these variables and display with a summary column.
+
 df[1,2]<-chisq.test(LA)$p.value
 df[2,2]<-chisq.test(Ph)$p.value
 df[3,2]<-chisq.test(SD)$p.value

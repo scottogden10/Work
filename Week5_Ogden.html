@@ -119,6 +119,8 @@ $(document).ready(function () {
 </div>
 
 
+<p>Tidying Data:</p>
+<p>Create a csv and load it from github:</p>
 <pre class="r"><code>library(tidyr)
 library(plyr)
 library(dplyr)</code></pre>
@@ -168,7 +170,7 @@ ggplot()+geom_point(data=alaska,aes(x=alaska$City,y=alaska$on_time/(alaska$delay
 
 ##We'd like to see if this is a significant difference, a fairly reasonable test may be the Chi Square test for independence for each city (adding Yates' correction for continuity when needed)  
 
-##Make tables by city
+##Make tables for each city Where the rows are the airline and the columns are on time and delayed.
 
  LA&lt;-rbind(subset(alaska,alaska$City==&quot;Los.Angeles&quot;,select = c(delayed,on_time)),subset(AMWEST,AMWEST$City==&quot;Los.Angeles&quot;,select = c(delayed,on_time)))
  
@@ -185,6 +187,8 @@ ggplot()+geom_point(data=alaska,aes(x=alaska$City,y=alaska$on_time/(alaska$delay
  
 options(scipen = 999)
  
+#Calculate chi-square test for independence on these variables and display with a summary column.
+
 df[1,2]&lt;-chisq.test(LA)$p.value
 df[2,2]&lt;-chisq.test(Ph)$p.value
 df[3,2]&lt;-chisq.test(SD)$p.value
@@ -201,9 +205,8 @@ dff</code></pre>
 ## 3     San.Diego 0.037627532723     Significant
 ## 4 San.Francisco 0.000005855264     Significant
 ## 5       Seattle 0.000163744783     Significant</code></pre>
-<pre class="r"><code>##So we see for San Diego, San Francisco and Seattle we have significant differences among the rows (Airline)
-
-## In Conclusions, the plot shows alaska outperforms AMWEST for all cities, but the Airline X Outcome observed minus expected values are signficant only for 3 out of 5.</code></pre>
+<p>So we see for San Diego, San Francisco and Seattle we have significant differences among the rows (Airline)</p>
+<p>In Conclusions, the plot shows alaska outperforms AMWEST for all cities, but the (Airline X Outcome) observed minus expected values are signficant only for 3 out of 5.</p>
 
 
 
