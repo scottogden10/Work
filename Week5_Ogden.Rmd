@@ -1,0 +1,75 @@
+---
+title: "Scott Ogden: Week 5 Assignent"
+output: html_document
+---
+
+Tidying Data:
+
+Create a csv and load it from github:
+
+```{r}
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+
+##Read in wide data from github
+u_data<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/untidy2.csv")
+
+##Now clean up and label data.
+u_data[2, 1] <- "ALASKA"
+u_data[5, 1] <- "AMWEST"
+clean<-u_data[-c(3),]
+clean1<-plyr::rename(clean,c("X"="Airline","X.1"="Status"))
+
+#Use the package to turn wide data into long, usable for analysis, with the only columns being for measures (dimensions collapse)
+
+t<-gather(clean1,"City","Number",3:7)
+t<-spread(t,"Status","Number")
+head(t)
+
+alaska<-subset(t,t$Airline=="ALASKA")
+AMWEST<-subset(t,t$Airline=="AMWEST")
+
+##Now Plot the on time percentage for each city with Alaska in Blue and AMWEST in red.
+
+ggplot()+geom_point(data=alaska,aes(x=alaska$City,y=alaska$on_time/(alaska$delayed+alaska$on_time)),colour='blue',size=4)+geom_point(data=AMWEST,aes(x=AMWEST$City,y=AMWEST$on_time/(AMWEST$delayed+AMWEST$on_time)),colour='red',size=4)+labs(x="City",y="Percent on time")+ggtitle("Alaska vs AMWEST On Time Percentage")
+
+##You can see quickly that AMWEST Always underperforms Alaska
+
+##We'd like to see if this is a significant difference, a fairly reasonable test may be the Chi Square test for independence for each city (adding Yates' correction for continuity when needed)  
+
+##Make tables by city
+
+ LA<-rbind(subset(alaska,alaska$City=="Los.Angeles",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="Los.Angeles",select = c(delayed,on_time)))
+ 
+ Ph<-rbind(subset(alaska,alaska$City=="Phoenix",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="Phoenix",select = c(delayed,on_time)))
+ 
+ SD<-rbind(subset(alaska,alaska$City=="San.Diego",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="San.Diego",select = c(delayed,on_time)))
+ 
+ SF<-rbind(subset(alaska,alaska$City=="San.Francisco",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="San.Francisco",select = c(delayed,on_time)))
+ 
+ Se<-rbind(subset(alaska,alaska$City=="Seattle",select = c(delayed,on_time)),subset(AMWEST,AMWEST$City=="Seattle",select = c(delayed,on_time)))
+
+##Summarize
+ df<-data.frame(City=alaska$City,P_Value=alaska$on_time)
+ 
+options(scipen = 999)
+ 
+df[1,2]<-chisq.test(LA)$p.value
+df[2,2]<-chisq.test(Ph)$p.value
+df[3,2]<-chisq.test(SD)$p.value
+df[4,2]<-chisq.test(SF)$p.value
+df[5,2]<-chisq.test(Se)$p.value
+ summ<-ifelse(df$P_Value<0.05,"Significant","Not-Significant")
+ 
+dff<-data.frame(City=df$City,P_Value=df$P_Value,Summary=summ)
+
+dff
+
+
+
+```
+So we see for San Diego, San Francisco and Seattle we have significant differences among the rows (Airline)
+
+In Conclusions, the plot shows alaska outperforms AMWEST for all cities, but the (Airline X Outcome) observed minus expected values are signficant only for 3 out of 5.
