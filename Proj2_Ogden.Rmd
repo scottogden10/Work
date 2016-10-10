@@ -1,0 +1,216 @@
+---
+title: "Scott Ogden: 607 Project 2"
+output: html_document
+---
+
+##Data Set 1: Hospital Experience Data
+
+I used the CMS website to download a csv containing wide data.  The goal is to produce analyze which states perform best on the "Overall Rating of the Hospital" question and to determine which questions are most associated with the Overall Rating. 
+
+```{r}
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+
+##Read in wide data from github
+u_data<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/VBP_EXP.csv")
+
+##Now clean up and label data, take only where the outcome interest (Overall Rating of Hospital) is Available.  Use only Achievement data (for current year's score).
+
+reduc<-data.frame("HospNum"=u_data$Provider.Number,"State"=u_data$State,u_data[grep("Achie",colnames(u_data))])
+
+
+clean<-subset(reduc,reduc$Overall..Rating.of.Hospital.Achievement.Points!='Not Available')
+
+#Use the package to turn wide data into long, usable for analysis, with the only columns being for measures (dimensions collapse)
+
+t<-gather(clean,"Metric","Score",3:10)
+head(t)
+
+#Change scores to their numeric values
+tidy<-data.frame(subset(t,select = HospNum:Metric),"Score"=as.numeric(str_sub(t$Score,1,2)))
+By_State<-aggregate(subset(tidy,select=Score),by=list(tidy$State,tidy$Metric),FUN=mean)
+
+#Now we have the results we need, a mean score grouped by question and by state.
+
+#For example Lets Look at the overall rating of the hospital by State and Identify the top ten pefroming sttates
+
+OR<-subset(By_State,Group.2=="Overall..Rating.of.Hospital.Achievement.Points")
+
+
+head(OR[order(-OR$Score),],10)
+#Notice they tend to be southern and midwestern states, now let's see the bottom performers.
+
+head(OR[order(OR$Score),],10)
+
+#Notice they tend to be primarily north/eastern states
+
+##Now let's analyze which factors are most correlated with the overall score.
+
+library(corrplot)
+
+Overall<-subset(tidy,tidy$Metric=="Overall..Rating.of.Hospital.Achievement.Points",select = Score)
+Comm_Nurse<-subset(tidy,tidy$Metric=="Communication.with.Nurses.Achievement.Points",select = Score)
+Comm_MD<-subset(tidy,tidy$Metric=="Communication.with.Doctors.Achievement.Points",select = Score)
+Environment<-subset(tidy,tidy$Metric=="Cleanliness.and.Quietness.of.Hospital.Environment.Achievement.Points",select = Score)
+Responsiveness<-subset(tidy,tidy$Metric=="Responsiveness.of.Hospital.Staff.Achievement.Points",select = Score)
+Discharge<-subset(tidy,tidy$Metric=="Discharge.Information.Achievement.Points",select = Score)
+Medication<-subset(tidy,tidy$Metric=="Communication.about.Medicines.Achievement.Points",select = Score)
+Pain_Control<-subset(tidy,tidy$Metric=="Pain.Management.Achievement.Points",select = Score)
+
+d<-data.frame(Overall,Comm_Nurse,Comm_MD,Environment,Responsiveness,Discharge,Medication,Pain_Control)
+
+dd<-plyr::rename(d,c("Score"="Overall","Score.1"="Comm_Nurse","Score.2"="Comm_MD","Score.3"="Environment","Score.4"="Responsiveness","Score.5"="Discharge","Score.6"="Medication","Score.7"="Pain_Control"))
+head(dd)
+M<-cor(dd)
+
+#Let's plot all of the correlations!
+
+corrplot(M,method="circle")
+
+#Now specific to Overall Rating
+M[,1]
+
+##We see that Nursing Communication and Pain Control are the two factors most correlated with Success on the Overall Rating!
+
+
+```
+
+##Data Set 2: Pokemon
+
+The goal of this analysis is to analyze which types of pokemon are best for attack, defense and speed.
+
+```{r}
+
+##Read in wide data from github
+p_data<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/pokemon.csv")
+
+##Now clean up and label data, take only where the outcome interest 
+
+
+##Ideally this would be normalized where you'd have tables describing which types are good against which others, but since our analysis calls attack, defense and speed we don't need 
+
+#We need to get rid of Outliers, the so called Mega pokemon
+p<-p_data[-grep("Mega",p_data$Name),]
+preduc<-subset(p,select=Name:Speed)
+
+#Prelim analysis based on these fields
+par(mfrow=c(2,2))
+hist(preduc$Attack.Level)
+hist(preduc$Defense.Level)
+hist(preduc$Speed)
+hist(preduc$Horse.Power)
+
+#We see that these are relatively well-behaved with a slight right skew, we can analyze with a mean or median and get a good sense for which types are good for what.
+
+
+#Use the package to turn wide data into long, usable for analysis, with the only columns being for measures (dimensions collapse)
+
+tp<-gather(preduc,"Stat","Score",3:6)
+head(tp)
+
+#Change scores to their numeric values
+tidyp<-data.frame(subset(tp,select = Type:Score),"Score"=as.numeric(str_sub(tp$Score,1,2)))
+By_Type<-aggregate(subset(tidyp,select=Score),by=list(tidyp$Type,tidyp$Stat),FUN=median)
+
+#Now we have the results we need, a median score grouped by question and by state.
+
+Atk<-subset(By_Type,Group.2=="Attack.Level")
+Def<-subset(By_Type,Group.2=="Defense.Level")
+HP<-subset(By_Type,Group.2=="Horse.Power")
+Sp<-subset(By_Type,Group.2=="Speed")
+
+Atk
+Def
+HP
+Sp
+
+#For more specificity lets add some box plots.
+tidypa<-subset(tidyp,tidyp$Stat=="Attack.Level")
+tidypd<-subset(tidyp,tidyp$Stat=="Defense.Level")
+tidyph<-subset(tidyp,tidyp$Stat=="Horse.Power")
+tidyps<-subset(tidyp,tidyp$Stat=="Speed")
+
+#Attack
+ggplot(tidypa, aes(x = tidypa$Type, y = tidypa$Score, fill = tidypa$Type))+geom_boxplot()
+#Fighting is the strongest type
+
+#Defense
+ggplot(tidypd, aes(x = tidypd$Type, y = tidypd$Score, fill = tidypd$Type))+geom_boxplot()
+#Rock is the strongest type
+
+#HP
+ggplot(tidyph, aes(x = tidyph$Type, y = tidyph$Score, fill = tidyph$Type))+geom_boxplot()
+#Flying is the strongest
+
+#Speed
+ggplot(tidyps, aes(x = tidyps$Type, y = tidyps$Score, fill = tidyps$Type))+geom_boxplot()
+#Flying is the strongest
+
+#Use overall Stats
+ggplot(tidyp, aes(x = tidyp$Type, y = tidyp$Score, fill = tidyp$Type))+geom_boxplot()
+#Flying is the strongest
+
+```
+
+
+
+##Data Source 3: Religion and Income
+
+
+
+```{r}
+
+##Read in wide data from github and rename for east of use.
+r_data<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/Relig.csv")
+colnames(r_data)<-c("Religion","LT30","30.49","50.99","GT100","n")
+
+#Use the package to turn wide data into long, usable for analysis, with the only columns being for measures (dimensions collapse)
+
+tr<-gather(r_data,"Metric","Score",2:5)
+head(tr,15)
+
+
+#Add the n to the data by multiplying score by sample size,
+
+tr$n_sub<-round(as.numeric(gsub("%","",tr$Score))*as.numeric(gsub(",","",tr$n))/100)
+
+#Now spread the data by the sub groups n to get a cross tab
+
+cross<-spread(subset(tr,select=c(Religion,Metric,n_sub)),Metric,n_sub)
+
+#The most basic test we can do is to see if these n's follow what would be expected of them if the rows were independent: a Chi Square test.
+
+
+chisq.test(cross[-1])
+chisq.test(cross[-1])$p.value
+
+#So the chance that the null hypothesis that there is no effect on the distribution by religion, were it true, would produce a result this extreme in very few cases.
+
+#We can go a little stronger with the analysis here, we can ask which religion is "the wealthiest".  We can't get means, because we don't have row level data, but we can get an ordering because they categories we do have are ordinal.
+
+cross2<-(cross)
+
+cross2$ntot<-cross2$`30.49`+cross2$`50.99`+cross2$GT100+cross2$LT30
+
+#We will assign 1,2,3,4 to the different categories to produce a wealth ordering among religions and then compute a weighted average of the ordinal designations.
+
+cross2$rank<-(2*cross2$`30.49`+3*cross2$`50.99`+4*cross2$GT100+1*cross2$LT30)/cross2$ntot
+
+rank_2<-cross2[order(-cross2$rank),c(1,7)]
+rank_2
+
+##We see that the jewish faith tend to be on the wealthier end while the historically black protestants are on the lower end, implying some sort of disparity.  Let's plot to finish:
+
+col<-c("red","green","blue","orange","grey","purple","yellow","black","white","darkblue","darkred","darkgreen")
+
+barplot(rank_2$rank,ylim=c(0,4),width=22,col=col,xlab="Religion",ylab="Wealth Order")
+
+legend("top",
+  legend=rank_2$Religion,
+  fill=col,cex=.6, ncol=3
+)
+
+```
