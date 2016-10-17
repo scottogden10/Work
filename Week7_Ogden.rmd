@@ -1,0 +1,73 @@
+---
+title: "Week 7 Assignment"
+author: "Scott Ogden"
+date: "October 16, 2016"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+library("XML")
+library(plyr)
+library(knitr)
+```
+
+### Assignment
+
+In this assignment we will load data from three different sources into R (as a prelude to further analysis)
+
+### Part 1: html
+
+Data from:
+https://github.com/scottogden10/607-Assignment2/blob/master/Books.html
+
+Use the htmltab library to load in the values and format as dataframe.
+
+```{r}
+html<-"https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/Books.html"
+library(htmltab)
+
+htmldf<-htmltab::htmltab(html)
+htmldf
+
+```
+
+
+### Part 2: XML
+
+Data from:
+https://github.com/scottogden10/607-Assignment2/blob/master/Books.xml
+
+Use the XML and Rcurl libraries to load in the values and format as dataframe.
+
+```{r}
+xml<-"https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/Books.xml"
+
+library("XML")
+library(RCurl)
+xmldata<-getURL(xml)
+xmlparse<-xmlParse(xmldata)
+xmlparse
+
+xmldf<-xmlToDataFrame(xmldata)
+xmldf
+```
+
+### Part 3: json
+
+Data from:
+https://github.com/scottogden10/607-Assignment2/blob/master/Books.json
+
+Use the jsonlite library to load in the values and format as dataframe.
+
+```{r}
+library(jsonlite)
+
+json<-"https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/Books.json"
+jsonurl=getURL(json)
+jsonlist<-jsonlite::fromJSON(jsonurl,simplifyDataFrame = TRUE)
+jsondf<-data.frame(jsonlist)
+
+jsondf
+```
+
+Note all the dataframes are identical with this code!
