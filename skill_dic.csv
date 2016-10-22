@@ -1,0 +1,700 @@
+skill,family,category
+access,t,
+accounting,nt,mn
+acl,t,
+activity context representation,t,
+adaptive software,t,
+advanced analysis,t,
+advanced computing,t,
+advanced excel,t,
+advanced linear algebra,t,
+advanced statistical analysis,t,
+advertising sales,nt,mn
+agile methoden,t,
+agile methodologies,t,
+agile project management,nt,mn
+air force,nt,ot
+akka,nt,ot
+algorithmen,t,
+algorithms,t,
+amazon web services (aws),t,
+analysis,t,
+analysis services,t,
+analytical skills,t,
+analytics,t,
+analytik,t,
+android development,t,
+anomaly detection,t,
+apache,t,
+apache http server,t,
+apache pig,t,
+apache spark,t,
+apache storm,t,
+applied mathematics,t,
+arcgis,t,
+arcgis online,t,
+architecture,t,
+architectures,t,
+arcpy,t,
+army,t,
+artificial intelligence,t,
+artificial neural networks,t,
+asset management,nt,mn
+astronomy,nt,ot
+astrophysics,t,
+automata theory,t,
+automation,t,
+automobilindustrie,t,
+backtesting,t,
+balanced scorecard,nt,mn
+banking,t,
+basic cs,t,
+basic math skills,t,
+bayesian networks,t,
+benchmarking,nt,mn
+big 4,t,
+big data,t,
+big data analytics,t,
+big data processing platforms,t,
+bioinformatics,t,
+biomedical engineering,t,
+blended learning,t,
+blended learning solutions,t,
+blockchain,t,
+blogging,t,
+book writing,nt,ot
+brand loyalty,nt,mn
+brand management,nt,mn
+business acumen,nt,ot
+business alliances,nt,mn
+business analysis,t,
+business analytics,t,
+business consulting,nt,mn
+business development,nt,mn
+business intelligence,t,
+business objects,t,
+business planning,nt,mn
+business process,nt,mn
+business process design,nt,mn
+business process improvement,nt,mn
+business process management,nt,mn
+business requirements,nt,mn
+business rules,nt,mn
+business statistics,t,
+business strategy,nt,mn
+business transformation,nt,mn
+business writing,nt,ot
+business-intelligence,t,
+c,t,
+c#,t,
+c++,t,
+career development,nt,hr
+career mapping,nt,hr
+change management,nt,hr
+character(0),t,
+chinese language teaching,nt,ot
+cissp,t,
+cloud computing,t,
+cluster,t,
+cluster analysis,t,
+coaching,nt,hr
+coding,t,
+coding skills,t,
+cognos,t,
+collaborative filtering,t,
+collaborative learning,nt,ss
+command,t,
+commenting,t,
+communication,nt,co
+communication skills,nt,co
+community development,nt,ot
+community engagement,nt,ot
+community outreach,nt,ot
+competitive analysis,nt,mn
+competitive intelligence,t,
+computational biology,t,
+computational intelligence,t,
+computer graphics,t,
+computer science,t,
+computer security,t,
+computer systems,t,
+computer vision,t,
+computerwissenschaft,t,
+computing,t,
+conference speaking,nt,co
+consulting,t,
+consumer behavior,t,
+consumer behaviour,t,
+consumer internet,t,
+content development,t,
+context,t,
+context-aware computing,t,
+controlling budgets,t,
+corporate communications,nt,co
+corporate finance,nt,mn
+corporate strategy formulation,nt,mn
+corporate university,nt,hr
+cosmology,t,
+creative concept development,t,
+creative problem solving,t,
+credit derivatives,t,
+crm,t,
+cross-cultural communication skills,nt,co
+cross-functional team leadership,nt,ss
+crystal reports,t,
+css,t,
+cto,t,
+current affairs,t,
+customer analysis,t,
+customer analytics,t,
+customer loyalty,nt,mn
+customer relationship management,t,
+customer relationship management (crm),t,
+customer satisfaction,nt,mn
+customer service,t,
+customer support,t,
+cyber security,t,
+d3.js,t,
+dashboard,t,
+dashboard metrics,t,
+dashboards,t,
+data analysis,t,
+data analytics,t,
+data bases,t,
+data engineering,t,
+data governance,t,
+data integration,t,
+data management,t,
+data migration,t,
+data mining,t,
+data mining skills,t,
+data modeling,t,
+data processing,t,
+data profiling,t,
+data quality,t,
+data research,t,
+data science,t,
+data structures,t,
+data visualization,t,
+data warehousing,t,
+data warehousing.,t,
+data wrangling,t,
+database design,t,
+database systems,t,
+databases,t,
+datastage,t,
+datenbanken,t,
+dax,t,
+db2,t,
+decision analysis,nt,mn
+decision management,nt,mn
+decision management systems,t,
+decision modeling,t,
+decision support,t,
+decision trees,t,
+deep learning,t,
+deep neural networks,t,
+derivatives trading,t,
+design patterns,t,
+digital image processing,t,
+digital media,t,
+digital media strategy,t,
+digital signal processing,t,
+digital strategy,t,
+direct marketing,t,
+disruptive technologies,t,
+distributed computing,t,
+distributed systems,t,
+django,t,
+documentation,nt,ot
+dod,t,
+domain knowledge,t,
+dts,t,
+due diligence,nt,ot
+dynamic mathematical modeling,t,
+eclipse,t,
+e-commerce,t,
+econometrics,t,
+economics,t,
+eda,t,
+editing,t,
+editor,t,
+education,nt,ot
+educational research,t,
+ejb,t,
+elasticsearch,t,
+e-learning,t,
+electronics,t,
+embedded systems,t,
+employee engagement,nt,hr
+endorsements,nt,ot
+engineering,t,
+engineering mathematics,t,
+english,nt,ot
+enterprise 2.0,t,
+enterprise architecture,t,
+enterprise collaboration,nt,ss
+enterprise it strategy,nt,mn
+enterprise software,t,
+entrepreneurship,nt,ot
+environmental awareness,nt,ot
+environmental engineering,t,
+equities,nt,ot
+erp,t,
+erwin,t,
+etl,t,
+event management,nt,mn
+eviews,t,
+executive coaching,nt,hr
+executive management,nt,mn
+executive reporting,nt,mn
+expert systems,t,
+exposure,t,
+federal government,nt,ot
+finance,t,
+financial analysis,t,
+financial controlling,nt,mn
+financial economics,t,
+financial markets,nt,ot
+financial modeling,t,
+forecasting,t,
+fortran,t,
+fraud,t,
+fraud analysis,t,
+french,nt,ot
+future trends,t,
+fx,t,
+game theory,t,
+gamification,t,
+general awesomeness,t,
+generalists,nt,ot
+genetic algorithms,t,
+gis,t,
+gis programer,t,
+git,t,
+github,t,
+global human resources management,nt,hr
+gnu octave,t,
+go-to-market strategy,t,
+gov 2.0,t,
+governance,nt,mn
+government,nt,ot
+graph mining,t,
+graph theory,t,
+grassroots marketing,t,
+gwt,t,
+hadoop,t,
+hadoop platform,t,
+hdfs,t,
+hidden markov models,t,
+high availability,t,
+high performance computing,t,
+higher education,nt,ot
+hindi,nt,ot
+hive,t,
+homeland security,t,
+hospitality,t,
+hr software,t,
+hr strategy,nt,hr
+hr transformation,nt,hr
+html,t,
+html + css,t,
+html5,t,
+human capital,nt,hr
+human computer interaction,t,
+human computer interfaces,t,
+human resources,nt,hr
+human-computer interaction,t,
+hydraulics,t,
+ibm db2,t,
+ibm watson,t,
+image analysis,t,
+image processing,t,
+imo (international mathematical olympiads),nt,
+industrial internet,t,
+information assurance,t,
+information management,nt,mn
+information retrieval,t,
+information security,t,
+innovation,t,
+inspiring leadership,nt,mn
+inspiring people,nt,hr
+integrated marketing,nt,mn
+integration,t,
+intelligence,t,
+intelligence community,t,
+intelligent natural user interfaces,t,
+intelligent speech-enabled systems,t,
+interactive data visualization design,t,
+international policy,nt,mn
+internet of things,t,
+internet recruiting,t,
+internet security,t,
+invention,nt,ot
+investments,nt,mn
+iot,t,
+it management,nt,mn
+it operations,t,
+it strategy,t,
+java,t,
+javascript,t,
+jboss application server,t,
+jmp,t,
+jpa,t,
+julia,t,
+kã¼nstliche intelligenz,t,
+keen io,t,
+key performance indicators,nt,mn
+knime,t,
+knowledge,nt,hr
+knowledge discovery,t,
+knowledge management,nt,mn
+knowledge-based systems,t,
+kontinuierliche verbesserung,t,
+kpi,nt,mn
+kpi implementation,nt,mn
+land development,t,
+latex,t,
+lead optimization,t,
+leadership,nt,mn
+leadership development,nt,hr
+learning,nt,hr
+learning management,nt,hr
+learning management systems,nt,hr
+legal research,t,
+legal writing,nt,ot
+lift station design,t,
+linear regression,t,
+linux,t,
+logging,t,
+logistic regression,t,
+lucene,t,
+machine learning,t,
+macroeconomics,t,
+management,nt,mn
+management consulting,nt,mn
+mandarin,nt,ot
+mapreduce,t,
+market analysis,nt,mn
+market opportunity analysis,nt,mn
+market research,t,
+marketing,nt,mn
+marketing communications,nt,co
+marketing management,nt,mn
+marketing research,t,
+marketing strategy,nt,mn
+marketo,t,
+maschinelles lernen,t,
+mathematica,t,
+mathematical analysis,t,
+mathematical modeling,t,
+mathematical modelling and simulation,t,
+mathematical programming,t,
+mathematics,t,
+matlab,t,
+mentoring,nt,hr
+mergers & acquisitions,nt,mn
+metadata management,t,
+metadata standards,t,
+micosoft office suite,t,
+microcontrollers,t,
+microsoft excel,t,
+microsoft office,t,
+microsoft sql server,t,
+military,nt,ot
+minitab,t,
+mobile applications,t,
+mobile internet,t,
+mobile marketing,t,
+modeling,t,
+monetization,t,
+mongodb,t,
+motivational speaking,nt,co
+mpp,t,
+multi agent systems,t,
+multithreading,t,
+multivariate statistics,t,
+multivariate testing,t,
+music,nt,ot
+mysql,t,
+national security,t,
+natural language processing,t,
+navy,nt,ot
+neo4j,t,
+network architecture,t,
+network intelligence,t,
+network security,t,
+networking,t,
+neural networks,t,
+new business development,nt,mn
+new media,t,
+new web technologies,t,
+nginx,t,
+nlp,t,
+nosql,t,
+numerical analysis,t,
+object oriented design,t,
+objective-c,t,
+olap,t,
+omniture,t,
+online advertising,t,
+online marketing,t,
+online publishing,t,
+online training,t,
+ontology,nt,ot
+open source,t,
+open source data science tools,t,
+opencv,t,
+opengl,t,
+optimization,t,
+oracle,t,
+oracle rac,t,
+organizational design,t,
+organizational development,nt,mn
+organizational effectiveness,nt,mn
+organizational learning,nt,hr
+other scientific disciplines,nt,ot
+owning up to the title,nt,ot
+paper craft,t,
+parallel computing,t,
+pattern recognition,t,
+pattern recognition%2f,t,
+pcb design,t,
+people management,nt,hr
+people-oriented,nt,hr
+peoplesoft,t,
+peoplesoft crm,t,
+performance improvement,nt,mn
+performance management,nt,mn
+performance measurement,t,
+performance tuning,t,
+perl,t,
+personnel management,nt,hr
+php,t,
+physical sciences,t,
+physics,t,
+pki,t,
+pl/sql,t,
+play framework,t,
+poetry,nt,ot
+portfolio management,nt,mn
+positioning,nt,mn
+ppc,t,
+predictive analytics,t,
+predictive modeling,t,
+pre-sales,nt,mn
+prescriptive analytics,t,
+presentations,nt,co
+probabilistic modelling,t,
+probabilistic models,t,
+problem solving,nt,ot
+process improvement,nt,mn
+product development,t,
+product evangelism,nt,co
+product management,nt,mn
+product marketing,nt,mn
+produktentwicklung,t,
+professional services,t,
+program management,nt,mn
+programmatic media buying,t,
+programming,t,
+project management,nt,mn
+project planning,t,
+proposal writing,nt,mn
+proprietary trading,nt,ot
+prozessverbesserung,t,
+public speaking,nt,co
+published author,nt,ot
+publishing,nt,ot
+python,t,
+python coding,t,
+quantitative analysis,t,
+quantitative analytics,t,
+quantitative data,t,
+quantitative finance,t,
+quantitative investing,t,
+r,t,
+r language,t,
+r programming,t,
+real-time bidding,t,
+recommender systems,t,
+recruiting,nt,hr
+regression,t,
+regression analysis,t,
+reporting systems,t,
+requirements analysis,t,
+research,t,
+rest,t,
+reusable code,t,
+risk management,nt,mn
+robotics,t,
+saas,t,
+sales advisor,nt,mn
+sales management,nt,mn
+salesforce.com,t,
+sap,t,
+sap erp,t,
+sap implementation,t,
+sas,t,
+sas programming,t,
+scala,t,
+scalability,t,
+science,t,
+science communication,nt,co
+science education,nt,hr
+scientific computing,t,
+scientific training,nt,hr
+scikit-learn,t,
+scrum,t,
+sdlc,t,
+search,t,
+search engine technology,t,
+securities regulation,t,
+security,t,
+security clearance,t,
+segmentation,nt,mn
+sem,t,
+semantic technologies,t,
+semantic web,t,
+semiconductors,t,
+seo,t,
+sewer,t,
+siebel,t,
+siebel crm,t,
+signal processing,t,
+simulation,t,
+simulationen,t,
+simulations,t,
+six sigma,t,
+slightly more advanced math concepts,t,
+soa,t,
+social business,t,
+social crm,t,
+social media,t,
+social media marketing,t,
+social media measurement,t,
+social network analysis,t,
+social networking,t,
+social networking sites,t,
+software architecture,t,
+software as a service (saas),t,
+software consulting,t,
+software deployment,t,
+software design,t,
+software development,t,
+software documentation,t,
+software engineering,t,
+softwareentwicklung,t,
+solution architecture,t,
+spark,t,
+spatial analysis,t,
+spatial databases,t,
+spring framework,t,
+spss,t,
+sql,t,
+sql database,t,
+sql server 2000-2008,t,
+sql server integration services (ssis),t,
+sql skills,t,
+sql tuning,t,
+ssas,t,
+ssis,t,
+ssrs,t,
+star schema,t,
+start-up consulting,t,
+start-ups,t,
+start-ups management,t,
+statistical arbitrage,t,
+statistical consulting,t,
+statistical data analysis,t,
+statistical inference,t,
+statistical modeling,t,
+statistical modelling,t,
+statistics,t,
+stochastic processes,t,
+stored procedures,t,
+stormwater management,t,
+strategic consulting,nt,mn
+strategic financial planning,nt,mn
+strategic partnerships,nt,mn
+strategic planning,nt,mn
+strategic thinking,nt,mn
+strategy,t,
+streaming analytics,t,
+structured data %28sql%29,t,
+succession planning,nt,mn
+svm,t,
+system architecture,t,
+system deployment,t,
+systems biology,t,
+systems engineering,t,
+tableau,t,
+tableau software,t,
+talent management,nt,hr
+target identification,nt,mn
+tax law,nt,mn
+teaching,nt,hr
+teaching english as a foreign language,nt,ot
+team leadership,nt,ss
+team management,nt,ss
+teamentwicklung,nt,ss
+teamwork,nt,ss
+technical presentations,nt,co
+technical recruiting,nt,hr
+technical training,nt,hr
+technical writing,t,
+technological innovation,t,
+technology integration,t,
+telecommunications,t,
+testing,t,
+text analytics,t,
+text mining,t,
+tfs,t,
+the blank canvas,t,
+thought leadership,nt,mn
+time management,nt,mn
+time series analysis,t,
+tomcat,t,
+tools,t,
+tools and technology,t,
+trading strategies,nt,mn
+training,nt,hr
+troubleshooting,t,
+t-sql,t,
+uml,t,
+understand the business and the problem,nt,ot
+understanding the data,t,
+unix,t,
+unstructured data,t,
+unstructured data %283-5 top nosql dbs%29,t,
+unternehmensfã¼hrung,t,
+user experience,t,
+value based selling,nt,mn
+vendor management,nt,mn
+venture capital,nt,mn
+verã¤nderungsmanagement,t,
+version control,t,
+vim,t,
+virtual personal assistants,t,
+visionary,t,
+visual basic,t,
+visual studio,t,
+vulnerability assessment,nt,mn
+waste management,t,
+wastewater treatment,t,
+wastewater treatment design,t,
+water distribution design,t,
+water quality,t,
+watercolor,t,
+wealth management,nt,mn
+web 2.0,t,
+web analytics,t,
+web development,t,
+web mining,t,
+web services,t,
+weka,t,
+windows server,t,
+working with children,nt,ot
+writing,nt,ot
+writing modular,t,
+xml,t,
