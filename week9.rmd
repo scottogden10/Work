@@ -1,0 +1,31 @@
+---
+title: "Week 9 Assignment"
+author: "Scott Ogden"
+date: "October 30, 2016"
+output: html_document
+---
+
+Get data from from article search API related to the country of Cuba.  You can change what is querried by renaming the "query" variable.
+
+```{r}
+key<-"4055a9abca9d40368891f34acf3d6421"
+
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json?q="
+
+query<-"Cuba"
+url<-paste0(url,query,"&api-key=",key)
+url
+
+
+library(jsonlite)
+
+rd<-jsonlite::fromJSON(url)
+
+columns<-as.data.frame(rd$response)
+names(columns)
+
+#Get data frame
+zyx<-data.frame("Date"=columns$docs.pub_date,"Snippet"=columns$docs.snippet,"URL"=columns$docs.web_url,"Section"=columns$docs.section_name,"Abstract"=columns$docs.abstract)
+head(zyx)
+```
+
