@@ -1,0 +1,100 @@
+---
+title: "Week 10 Assignment"
+author: "Scott Ogden"
+date: "November 6, 2016"
+output: html_document
+---
+
+This code trains an algorthm on spam / ham files and the accuracy of the 'model' is tested on 3 percent of the data, as is typical for classification models.
+
+```{r warning=FALSE, message=FALSE}
+require(tm)
+library(SnowballC)
+library(RTextTools)
+
+spam <- Corpus(DirSource("./spam_2", pattern = "[[:digit:]]"))
+ham <- Corpus(DirSource("./easy_ham", pattern = "[[:digit:]]"))
+
+#spam_test <- Corpus(DirSource("./spam", pattern = "[[:digit:]]"))
+#ham_test <- Corpus(DirSource("./easy_ham_2", pattern = "[[:digit:]]"))
+
+
+meta(spam, tag = "type") <- "spam"
+meta(ham, tag = "type") <- "ham"
+
+combined<-c(spam,ham,recursive = T)
+
+head(summary(combined))
+
+## Now clean a little
+
+cleaned<-tm_map(combined,tolower)
+cleaned<-tm_map(cleaned,removePunctuation)
+cleaned<-tm_map(cleaned, stripWhitespace)
+cleaned<-tm_map(cleaned,stemDocument)
+cleaned<-tm_map(cleaned,PlainTextDocument)
+
+## To Document Term Matrix
+
+dtm<-DocumentTermMatrix(cleaned)
+head.matrix(dtm)
+
+##Remove sparse terms
+
+dtm<-removeSparseTerms(dtm, .999)
+head.matrix(dtm)
+
+## Get types of data in a vector
+
+types<-unlist(meta(cleaned, "type")[,1])
+
+
+
+```
+
+
+Now with the rTextTools run many models to compare accuracy.  But first we split the data into train or test in a way that is dependent on the length of spam+ham
+
+```{r}
+trmin<-1
+trmax<-round(.7*(length(types)),digits=0)
+temin<-trmax+1
+temax<-length(types)
+
+model_cntr<-create_container(dtm,labels=types,trainSize = trmin:trmax,testSize = temin:temax,virgin = FALSE)
+
+
+### Now run a couple models  on train data (I am getting stack overflow warnings on RF and TREE Models)
+
+model_SVM<-train_model(model_cntr,algorithm = "SVM")
+model_MAXENT<-train_model(model_cntr,algorithm = "MAXENT")
+#model_TREE<-train_model(model_cntr,algorithm = "TREE")
+
+
+## Modeloutputs
+
+svm <- classify_model(model_cntr, model_SVM)
+
+ent <- classify_model(model_cntr, model_MAXENT)
+
+```
+
+Now we will compare the results of the true values in the Test sample and the models' calculated values.
+
+
+```{r}
+results<-data.frame("Test"=types[temin:temax],"SVM"=svm$SVM_LABEL,"MAXENT"=ent$MAXENTROPY_LABEL,stringsAsFactors = FALSE)
+
+head(results)
+
+Class_Acc_SVM<-sum(results$Test==results$SVM)/nrow(results)
+Class_Acc_ENT<-sum(results$Test==results$MAXENT)/nrow(results)
+
+Acc<-data.frame("SVM_Accuracy"=Class_Acc_SVM,"MAXENT_Accuracy"=Class_Acc_ENT)
+
+Acc
+
+```
+
+
+So SVM has a 85 percent accuracy on this test data while MAXENT has a 98 percent, a big difference!!  This was a cool, challenging project because these packages give you a streamlined way to classify these documents, once you learn them of course..
