@@ -1,0 +1,44 @@
+---
+title: "Discussion 11"
+author: "Scott Ogden"
+date: "November 11, 2016"
+output: html_document
+---
+
+###Twitter Who to Follow
+
+The article is describing the twitter engine is <a href="https://stanford.edu/~rezab/papers/wtf_overview.pdf"> here. </a>
+
+
+### Scenario Analysis 1
+
+Target users:  citizens on the internet:
+
+Key goals:  To network, socialize with friends and find web content suited to their interests.
+
+How can it help?  By recommending who to follow twitter helps like individuals discover each other and each other's respective content.
+
+### Scenario Analysis 2
+
+Target Users:  creators of webcontent
+
+Key goals: To distribute their content as broadly as possible.
+
+How can it help?  By finding people willing to share their content, webcontent creators have a way of getting their voice heard on the internet.
+
+
+###The Method
+
+The WTF engine was specifically designed to be able to run in memory on a single server.They have an open source graph processing engine called Cassovary.  The have a user recommenation engine called SALSA, which worked on directed graphs.  
+
+The twitter graph is vertices which are users with edges that represent who follows who.  It is unidirectional and doesn't requre consent of both points.  They consider it an 'interests graph' rather than a social networking graph.  All of this is stored in FlockDB, which uses MySQL.  They chose not to use Hadoop which may seem strange.Instead they do offline batch jobs.
+
+Cassovary provides vertex based queries and random sampling along them with a monte-carlo method to analyze the graph as an approxition to the Page Rank.  They note a slower convergence but incredibly low memory use per user.  
+Daily snapshots of the twitter graph are imported to this analytics popeline.  Typically, it takes less than 0.5 seconds per thread to generate recommendations.  The algorithm uses the 'circle of trust' that is similar ot PageRank.
+
+
+### Possible Improvements
+
+WTF  Could be improved, in my opinion, by analyzing the content of tweets for sentiment and directionality. And then recommending content and causes that are related.  For example google's phone recommendations often fail spectacularly because when you read a lot of articles about, let's say Donald Trump it assumes you support him and offers recommendations for sites like Breitbart.com.  This couldn't be more wrong.
+
+
