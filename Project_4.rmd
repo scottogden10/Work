@@ -1,0 +1,108 @@
+---
+title: "Project 4"
+author: "Scott Ogden"
+date: "November 17, 2016"
+output: html_document
+---
+
+For Project 4, you should take information from a relational database and migrate it to a NoSQL database of your own choosing. 
+
+For the relational database, you might use the flights database, the tb database, the "data skills" database your team created for Project 3, or another database of your own choosing or creation.
+
+For the NoSQL database, you may use MongoDB, Neo4j (which we introduce in Week 12), or another NoSQL database of your choosing.
+
+ Your migration process needs to be reproducible.  R code is encouraged, but not required.  You should also briefly describe the advantages and disadvantages of storing the data in a relational database vs. your NoSQL database.
+
+
+So first load the RMySQL Package and connect to the FLIGHTS database and export the data to CSV Files.
+
+```{r}
+library(RMySQL)
+library("RNeo4j")
+library(grid)
+library(png)
+setwd("C:/Users/sogde/Desktop/607")
+z<-readPNG(source="C:/Users/sogde/Desktop/607/neo5f.png")
+
+MySQL_Username <- "root"
+MySQL_Password <- "Coolyo123!"
+db = 'flights'
+connection <- dbConnect(MySQL(), user=MySQL_Username, password=MySQL_Password,dbname=db)
+
+airlines <- dbGetQuery(connection, "SELECT * from airlines")
+head(airlines,2)
+
+
+##Don't load to dataframes
+setwd("~/Neo4j/default.graphdb/import")
+
+write.csv(dbGetQuery(connection, "SELECT * from airlines"),file='airlines.csv',row.names=FALSE)
+write.csv(dbGetQuery(connection, "SELECT * from airports"),file='airports.csv',row.names=FALSE)
+write.csv(dbGetQuery(connection, "SELECT * from planes"),file='planes.csv',row.names=FALSE)
+write.csv(dbGetQuery(connection, "SELECT * from flights limit 3000"),file='flights.csv',row.names=FALSE)
+write.csv(dbGetQuery(connection, "SELECT * from weather"),file='weather.csv',row.names=FALSE)
+
+
+#dbDisconnect(connection)
+
+
+```
+
+### Importing the Data to Neo4j
+
+```{r}
+graph <- startGraph("http://localhost:7474/db/data", username = "neo4j", password = "Coolyo123!")
+clear(graph, input = F)
+
+###CQL
+
+##Adds airports
+query1 = '
+LOAD CSV WITH HEADERS FROM "file:///airports.csv" AS airports
+CREATE (airport: Airport {airport_id: airports.faa, airport_name: airports.name, lat:airports.lat, lon:airports.lon, alt: airports.alt, tz: airports.tz, dst: airports.dst});  
+'
+cypher(graph, query1)
+
+### Adds flights
+query2 = '
+//LOAD flights table
+LOAD CSV WITH HEADERS FROM "file:///flights.csv" AS flights
+CREATE(f: Flight {year: flights.year, month: flights.month, day: flights.day, dep_time: flights.dep_time, arr_time: flights.arr_time, carrier: flights.carrier, flight_num: flights.flight, air_time: flights.air_time, distance: flights.distance, hour: flights.hour, minute: flights.minute});
+'
+cypher(graph, query2)
+
+##Adds weather
+query3= '
+LOAD CSV WITH HEADERS FROM "file:///weather.csv" AS weather
+CREATE(w: Weather {year:weather.year, month: weather.month, day:weather.day, hour:weather.hour, origin:weather.origin, temp:weather.temp, dewp:weather.dewp, humid:weather.humid, wind_dir:weather.wind_dir, wind_speed:weather.wind_speed, wind_gust:weather.wind_gust, precip:weather.precip, pressure: weather.pressure, visib:weather.visib}); 
+'
+cypher(graph, query3)
+
+##Loads planes
+query4='
+LOAD CSV WITH HEADERS FROM "file:///planes.csv" AS planes
+CREATE(p: Plane {tailnum: planes.tailnum, prod_yr: planes.year, p_type: planes.type, mfr: planes.manufacturer, model: planes.model, num_engines: planes.engines, seats: planes.seats, speed:planes.speed, engine_typ: planes.engine}); 
+'
+cypher(graph,query4)
+
+
+
+```
+
+This code successfully loads relationship into Neo4j, which you can see:
+
+```{r}
+grid.raster(z)
+```
+
+
+### Comparison
+
+Queries in SQL (especially complex ones) appear to run faster.  For example simple loading or matching can take ~10-20 seconds for 3000 records or so.  SQL would have it done instantaneously.
+
+ The complexity and format of queries in NoSQL is limiting.
+ 
+ SQL Databases are vertically scalable - increasing the CPU or RAM or Storage on a single server increases performance while NoSQL increases by adding servers.
+ 
+ NoSQL would thus be used for large amounts of data.
+
