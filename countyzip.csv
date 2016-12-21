@@ -1,5 +1,4 @@
-Sort [1],State,FIPS,County [2],Latitude,Longitude
-,,,,,
+sort,state,FIPS,county,LAT,LONG
 1,AL,1001,Autauga,32.536382,-86.64449
 2,AL,1003,Baldwin,30.659218,-87.746067
 3,AL,1005,Barbour,31.87067,-85.405456
