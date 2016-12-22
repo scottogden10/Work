@@ -1,0 +1,404 @@
+---
+title: "Final Project"
+author: "Scott Ogden"
+date: "December 18, 2016"
+output: html_document
+---
+##Election Analysis: What Happened
+
+### Introduction
+
+Unless you weren't on this planet, you knew November held one of the most fascinating election in US history.  This analysis combines American Census demographics and county voting records to dispel or confirm common wisdom spoken about the election and its results.  Let's begin by compiling the independent and dependent variables seperately, from Cook Political Reporting and the ACS API respectively.  This will involve joining and transforming elements so that they work nicely together.
+
+The data I gather will be aggregated on the US County Level, so we can determine which factors affect likelihood to vote Democratic (without loss of generality), or likelihood to decrease voter turnout.
+
+```{r }
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(UScensus2010)
+
+
+## Compiled by Cook Politcal Reporting, from their github, these are the independent variables: the outcome of the elections:
+
+county<-read.csv(file = "https://raw.githubusercontent.com/tonmcg/County_Level_Election_Results_12-16/master/US_County_Level_Presidential_Results_08-16.csv")
+
+head(county)
+
+### Add Calcualted Outcome Variables (dependent variables)
+
+Indy<-data.frame(county,"TotalDiff"=(county$total_2016-county$total_2012)/county$total_2012,
+                 "DemDiff"=(county$dem_2016-county$dem_2012)/county$dem_2012,
+                 "RepDiff"=(county$gop_2016-county$gop_2012)/county$gop_2012,
+                 "OthDiff"=(county$oth_2016-county$oth_2012)/county$oth_2012,
+                 "Dem_Score_2012"=county$dem_2012/county$total_2012,
+                 "Dem_Score_2016"=county$dem_2016/county$total_2016,
+                  "Oth_Score_2016"=county$oth_2016/county$total_2016,
+                 "Dem_Score_Diff"=county$dem_2016/county$total_2016-county$dem_2012/county$total_2012
+                 )
+
+IndyClean<-data.frame(Indy[1],Indy[15:22])
+
+
+
+##Now we need demographic information from the Census API, so I registered for a key and it takes some a tiny trick to install the package:  These are the dependent variables
+
+#url2 <- "http://lakshmi.calit2.uci.edu/census2000/R/src/contrib/UScensus2010tract_1.00.tar.gz"
+#url3<-"http://lakshmi.calit2.uci.edu/census2000/R/src/contrib/UScensus2010county_1.00.tar.gz"
+#install.packages(url3, repos = NULL)
+#library(UScensus2010tract)
+library(UScensus2010county)
+key<-"3c293c96d558db8fad8e7272e400c7775235bd20"
+
+###Gets Total Population, How Many White, How Many Hispanic:  
+
+#Note all census data from 2010
+
+demvars<-c("P0010001","P0030002","P0040003")
+d1<-data.frame(demographics(state="AL",level="county",dem = demvars))
+d2<-data.frame(demographics(state="AK",level="county",dem = demvars))
+d3<-data.frame(demographics(state="AZ",level="county",dem = demvars))
+d4<-data.frame(demographics(state="AR",level="county",dem = demvars))
+d5<-data.frame(demographics(state="CA",level="county",dem = demvars))
+d6<-data.frame(demographics(state="CO",level="county",dem = demvars))
+d7<-data.frame(demographics(state="CT",level="county",dem = demvars))
+d8<-data.frame(demographics(state="DE",level="county",dem = demvars))
+d9<-data.frame(demographics(state="DC",level="county",dem = demvars))
+d10<-data.frame(demographics(state="FL",level="county",dem = demvars))
+d11<-data.frame(demographics(state="GA",level="county",dem = demvars))
+d12<-data.frame(demographics(state="HI",level="county",dem = demvars))
+d13<-data.frame(demographics(state="ID",level="county",dem = demvars))
+d14<-data.frame(demographics(state="IL",level="county",dem = demvars))
+d15<-data.frame(demographics(state="IN",level="county",dem = demvars))
+d16<-data.frame(demographics(state="IA",level="county",dem = demvars))
+d17<-data.frame(demographics(state="KS",level="county",dem = demvars))
+d18<-data.frame(demographics(state="KY",level="county",dem = demvars))
+d19<-data.frame(demographics(state="LA",level="county",dem = demvars))
+d20<-data.frame(demographics(state="ME",level="county",dem = demvars))
+d21<-data.frame(demographics(state="MD",level="county",dem = demvars))
+d22<-data.frame(demographics(state="MA",level="county",dem = demvars))
+d23<-data.frame(demographics(state="MI",level="county",dem = demvars))
+d24<-data.frame(demographics(state="MN",level="county",dem = demvars))
+d25<-data.frame(demographics(state="MS",level="county",dem = demvars))
+d26<-data.frame(demographics(state="MO",level="county",dem = demvars))
+d27<-data.frame(demographics(state="MT",level="county",dem = demvars))
+d28<-data.frame(demographics(state="NE",level="county",dem = demvars))
+d29<-data.frame(demographics(state="NV",level="county",dem = demvars))
+d30<-data.frame(demographics(state="NH",level="county",dem = demvars))
+d31<-data.frame(demographics(state="NJ",level="county",dem = demvars))
+d32<-data.frame(demographics(state="NM",level="county",dem = demvars))
+d33<-data.frame(demographics(state="NY",level="county",dem = demvars))
+d34<-data.frame(demographics(state="NC",level="county",dem = demvars))
+d35<-data.frame(demographics(state="ND",level="county",dem = demvars))
+d36<-data.frame(demographics(state="OH",level="county",dem = demvars))
+d37<-data.frame(demographics(state="OK",level="county",dem = demvars))
+d38<-data.frame(demographics(state="OR",level="county",dem = demvars))
+d39<-data.frame(demographics(state="PA",level="county",dem = demvars))
+d40<-data.frame(demographics(state="RI",level="county",dem = demvars))
+d41<-data.frame(demographics(state="SC",level="county",dem = demvars))
+d42<-data.frame(demographics(state="SD",level="county",dem = demvars))
+d43<-data.frame(demographics(state="TN",level="county",dem = demvars))
+d44<-data.frame(demographics(state="TX",level="county",dem = demvars))
+d45<-data.frame(demographics(state="UT",level="county",dem = demvars))
+d46<-data.frame(demographics(state="VT",level="county",dem = demvars))
+d47<-data.frame(demographics(state="VA",level="county",dem = demvars))
+d48<-data.frame(demographics(state="WA",level="county",dem = demvars))
+d49<-data.frame(demographics(state="WV",level="county",dem = demvars))
+d50<-data.frame(demographics(state="WI",level="county",dem = demvars))
+d51<-data.frame(demographics(state="WY",level="county",dem = demvars))
+
+
+alldemo<-rbind(d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27,d28,d29,d30,d31,d32,d33,d34,d35,d36,d37,d38,d39,d40,d41,d42,d43,d44,d45,d46,d47,d48,d49,d50,d51)
+
+colnames(alldemo)<-c("Population","White","Hispanic")
+
+ Counties <- rownames(alldemo)
+ alldemo<-cbind(Counties,alldemo)
+ 
+demo<-data.frame(alldemo,"Per.White"=alldemo$White/alldemo$Population,"Per.Hispanic"=alldemo$Hispanic/alldemo$Population)
+head(demo) 
+
+ ###
+# Load FIPS to county name lookup file
+fips<-read.csv("http://www2.census.gov/geo/docs/reference/codes/files/national_county.txt",header = FALSE)
+fips<-data.frame(fips,"L"=paste(fips$V2,sprintf("%03d", fips$V3),sep = ""))
+ head(fips)
+ 
+ ##Use the Acs Package with the API to get more in-depth data
+ 
+library(acs)
+ 
+ ## Sex data
+sex <- acs.fetch(
+    geography = geo.make(state = "*", county="*"),
+    endyear = 2010, span = 0,
+    table.number = "P12", 
+    col.names = "pretty",key=key,dataset='sf1')
+
+sexdem<-data.frame(sex@geography$state,sex@geography$county,sex@estimate)
+sexvars<-data.frame("State"=sexdem$sex.geography.state,
+"County"=sexdem$sex.geography.county,
+"FIPS"=paste(sexdem$sex.geography.state,sexdem$sex.geography.county,sep=""),
+"Male"=sexdem$P12..Sex.By.Age..Male.,
+"Female"=sexdem$P12..Sex.By.Age..Total.population-sexdem$P12..Sex.By.Age..Male.,
+"Per.Male"=sexdem$P12..Sex.By.Age..Male./sexdem$P12..Sex.By.Age..Total.population
+)
+head(sexvars)
+
+## African American & White
+
+race <- acs.fetch(
+    geography = geo.make(state = "*", county="*"),
+    endyear = 2010, span = 0,
+    table.number = "P6", 
+    col.names = "pretty",key=key,dataset='sf1')
+
+racedem<-data.frame(race@geography$state,race@geography$county,race@estimate)
+racevars<-data.frame("State"=racedem$race.geography.state,
+"County"=racedem$race.geography.county,
+"FIPS"=paste(racedem$race.geography.state,racedem$race.geography.county,sep=""),
+"Afr.Am"=racedem$P6..RACE..TOTAL.RACES.TALLIED...Black.or.African.American.alone.or.in.combination.with.one.or.more.other.races,
+"Per.Afr.Am"=racedem$P6..RACE..TOTAL.RACES.TALLIED...Black.or.African.American.alone.or.in.combination.with.one.or.more.other.races/racedem$P6..RACE..TOTAL.RACES.TALLIED...Total.races.tallied,
+"Per.White"=racedem$P6..RACE..TOTAL.RACES.TALLIED...White.alone.or.in.combination.with.one.or.more.other.races/racedem$P6..RACE..TOTAL.RACES.TALLIED...Total.races.tallied
+)
+head(racevars)
+
+
+## Age data
+library(acs)
+age <- acs.fetch(
+    geography = geo.make(state = "*", county="*"),
+    endyear = 2010, span = 0,
+    table.number = "P13", 
+    col.names = "pretty",key=key,dataset='sf1')
+
+agedem<-data.frame(age@geography$state,age@geography$county,age@estimate)
+agevars<-data.frame("State"=agedem$age.geography.state,
+"County"=agedem$age.geography.county,
+"Age"=agedem$P13..MEDIAN.AGE.BY.SEX..3...1.expressed.decimal...Both.sexes,
+"FIPS"=paste(agedem$age.geography.state,agedem$age.geography.county,sep=""))
+
+head(agevars)
+
+## Employment data Note the API call isn't working for this table so I downloaded it and put it on Github
+
+emp<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/Unemployment.csv")
+emp<-data.frame("ID"=as.character(emp$Id2),emp$Unempl.Rate)
+## Income
+
+txcountys<-geo.make(state="*",county="*")
+
+income.county<-acs.fetch(key=key,endyear = 2010, span = 5, geography = txcountys, table.number = "B19013")
+
+trincome<-data.frame(income=income.county@estimate)
+trincome$ids<-paste(income.county@geography$state, sprintf("%03s", income.county@geography$county), sep="")
+names(trincome)<-c("Income", "FIPS")
+head(trincome)
+
+##Education
+#Create a weighted mean score of education since the data are ordinal
+
+edu.county<-acs.fetch(key=key,endyear = 2010, span = 5, geography = txcountys, table.number = "B16010")
+edu.county@acs.colnames
+tredu1<-data.frame(edu=edu.county@estimate)
+tredu<-data.frame("Total"=tredu1$edu.B16010_001,
+      "Some.HS"=tredu1$edu.B16010_002,
+      "HS"=tredu1$edu.B16010_015,
+      "Some.College"=tredu1$edu.B16010_028,
+      "BA"=tredu1$edu.B16010_041,
+      "FIPS"=paste(edu.county@geography$state, sprintf("%03s", edu.county@geography$county), sep=""),
+      "ED_Score"=(tredu1$edu.B16010_002*1+tredu1$edu.B16010_015*2+tredu1$edu.B16010_028*3+tredu1$edu.B16010_041*4)/tredu1$edu.B16010_001
+)
+
+head(tredu)
+
+###Let's combine all our dependent variables from Census into one dataframe:
+
+library(dplyr)
+
+Census<-full_join(racevars,sexvars,by=c("FIPS"="FIPS"))
+Census1<-full_join(Census,agevars,by=c("FIPS"="FIPS"))
+Census2<-full_join(Census1,tredu,by=c("FIPS"="FIPS"))
+Census3<-full_join(Census2,trincome,by=c("FIPS"="FIPS"))
+Census4<-full_join(Census3,fips,by=c("FIPS"="L"))
+Census5<-left_join(Census4,demo,by=c("V4"="Counties"))
+Census6<-full_join(Census5,emp,by=c("FIPS"="ID"))
+
+##Join Swing States
+
+Swing<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/swing.csv")
+Census7<-left_join(Census6,Swing,by=c("State"="State.FIPS.Code"))
+
+##Now Pair it down
+
+CensusClean<-data.frame(
+  "State"=Census7$State.x,
+  "County"=Census7$County.x,
+  "CountyName"=Census7$V4,
+  "FIPS"=Census7$FIPS,
+  "Per.White"=Census7$Per.White.x,
+  "Per.Hispanic"=Census7$Per.Hispanic,
+  "Per.Afr.Am"=Census7$Per.Afr.Am,
+  "Per.Male"=Census7$Per.Male,
+  "MedAge"=Census7$Age,
+  "Income"=Census7$Income,
+  "ED_Score"=Census7$ED_Score,
+  "Unempl"=Census7$emp.Unempl.Rate,
+  "Swing"=Census7$SwingState
+)
+
+
+head(CensusClean)
+
+
+```
+
+
+###Analysis
+
+Now that we have the data we need, let's visualize it and perform the analyses we need.  In general we mean to correlate via a multivariable linear regression the outcome of "Democrat Shift" (WLOG) to the variables provided to answer questions about what underlying causes of the shifts were.  A simplifying assumption we make is that the a couple of percent of "other" votes don't affect the conclusions.  Equivalently, around an equal fraction of them would have voted from Trump as Clinton.
+
+
+
+```{r}
+library(ggmap)
+##First we want to plot the change in votes by county on a us map, try to figure out what happened. 
+
+cpoints<-read.csv("https://raw.githubusercontent.com/scottogden10/607-Assignment2/master/countyzip1.csv")
+
+coords1<-left_join(IndyClean,cpoints,by=c("fips_code"="fips"))
+
+usa_center <- as.numeric(geocode("United States"))
+USAMap <- ggmap(get_googlemap(center=usa_center, scale=2, zoom=4), extent="normal")
+
+USAMap+geom_point(aes(x=long, y=lat,color=((coords1$Dem_Score_Diff))), data=coords1, alpha=0.5, size=coords1$Dem_Score_Diff*.5) + 
+scale_size_continuous(range=range(coords1$Dem_Score_Diff))+
+scale_colour_gradient( low="red",high = "blue",name="Shift")+
+scale_fill_continuous(low="red",high = "blue",name="Shift")+
+  labs(x="Longitude",y="Latitude", title="Democratic Change from 2012 to 2016")+
+xlim(-130,-60)
+
+##Now How People Voted from 2012 compared to 2016
+par(mfrow=c(1,2))
+
+USAMap+geom_point(aes(x=long, y=lat,color=((coords1$Dem_Score_2012))), data=coords1, alpha=0.5, size=coords1$Dem_Score_2012*.5) + 
+scale_size_continuous(range=range(coords1$Dem_Score_2012))+
+scale_colour_gradient( low="red",high = "blue",name="Shift")+
+scale_fill_continuous(low="red",high = "blue",name="Shift")+
+  labs(x="Longitude",y="Latitude", title="Vote 2012")+
+xlim(-130,-60)
+
+USAMap+geom_point(aes(x=long, y=lat,color=((coords1$Dem_Score_2016))), data=coords1, alpha=0.5, size=coords1$Dem_Score_2016*.5) + 
+scale_size_continuous(range=range(coords1$Dem_Score_2016))+
+scale_colour_gradient( low="red",high = "blue",name="Shift")+
+scale_fill_continuous(low="red",high = "blue",name="Shift")+
+  labs(x="Longitude",y="Latitude", title="Vote 2016")+
+xlim(-130,-60)
+
+
+
+```
+
+
+We see that the coasts have a bluer shift while the heartland, rustbelt region has a redder shift, implying strategic gains for Republicans in an electoral system, since the coasts are not competative to begin with.
+
+Now let's build a model of voter shift:
+
+```{r}
+IndyClean$fips_code<-as.factor(IndyClean$fips_code)
+
+model_data<-left_join(IndyClean,CensusClean,by=c("fips_code"="FIPS"))
+head(model_data)
+
+##Let's checkout our data first to be sure a linear regression works.
+hist(IndyClean$Dem_Score_Diff, xlab="",ylab="",main="Dem Shift Percent",col="black")
+summary(IndyClean$Dem_Score_Diff)
+##Most counties shifted away from dems
+
+par(mfrow=c(2,4))
+hist(CensusClean$Per.White,col = 'white', xlab="",ylab="",main="Per White")
+hist(CensusClean$Per.Afr.Am,col = 'purple', xlab="",ylab="",main="Per African American")
+hist(CensusClean$Per.Hispanic,col = 'blue', xlab="",ylab="",main="Per Hispanic")
+hist(CensusClean$Per.Male,col = 'orange', xlab="",ylab="",main="Percent Male")
+hist(CensusClean$Income,col = 'green', xlab="",ylab="",main="Income")
+hist(CensusClean$MedAge,col = 'grey', xlab="",ylab="",main="Median Age")
+hist(CensusClean$ED_Score,col = 'pink', xlab="",ylab="",main="ED Score")
+hist(CensusClean$Unempl,col = 'lightgreen', xlab="",ylab="",main="Unemployment")
+
+##Seems pretty good, most are normal 
+
+library(corrplot)
+mus<-cor(na.omit(CensusClean[5:12]))
+corrplot(mus)
+
+##Note that Per White is Strongly Anticorrelated with Per. Afr Am.  This isn't unexpected in a sense that fractions have to add up to 1 however it is a little concerning to see how this anecdotally suggets seggregation still exits.  We may not want to use both variables in the regression however, given how strongly associated they are. 
+
+
+##For all of USA
+
+US<-lm(data = model_data,Dem_Score_Diff~Per.White+Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+Income+ED_Score+Unempl)
+summary(US)
+aov(data = model_data,Dem_Score_Diff~Per.White+Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+Income+ED_Score+Unempl)
+
+#All variables are significant, let's pair down the White Variable.
+
+US<-lm(data = model_data,Dem_Score_Diff~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+Income+ED_Score+Unempl)
+summary(US)
+USa<-aov(data = model_data,Dem_Score_Diff~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+Income+ED_Score+Unempl)
+USa
+#R squared is unchanged.
+##Check model
+par(mfrow=c(2,4))
+ plot(y=US$residuals, x=na.omit(model_data)$Income, xlab="Income")
+ plot(y=US$residuals, x=na.omit(model_data)$Unempl, xlab="Unempl")
+ plot(y=US$residuals, x=na.omit(model_data)$Per.Afr.Am,xlab="Race")
+plot(y=US$residuals, x=na.omit(model_data)$ED_Score,xlab="Edu")
+plot(y=US$residuals, x=na.omit(model_data)$Per.Male,xlab="Male")
+plot(y=US$residuals, x=na.omit(model_data)$Per.Hispanic,xlab="Hispanic")
+plot(y=US$residuals, x=na.omit(model_data)$MedAge,xlab="Age")
+```
+
+This Model Says that increased Hispanic Percentage, African American Percentage, Income, of a county means it was more likely to shift positive towards Democrats and that the more Male, the older and the less employed the county was the more it would shift away from Democrats.  This seems like it fits a 'pundit' model of elections.  Let's see how it plays out in swing states.
+
+
+```{r}
+####Swing States Model
+
+sw<-lm(data = subset(model_data, Swing==1),Dem_Score_Diff~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+Income+ED_Score+Unempl)
+summary(sw)
+##let's pair down non-significant variables, make it more parisomonious remove age and percent male.
+sw<-lm(data = subset(model_data, Swing==1),Dem_Score_Diff~Per.Hispanic+Per.Afr.Am+Income+ED_Score+Unempl)
+summary(sw)
+
+swa<-aov(data = subset(model_data, Swing==1),Dem_Score_Diff~Per.Hispanic+Per.Afr.Am+Income+ED_Score+Unempl)
+swa
+
+```
+
+
+Now let's do the same but for what predict GOP vs Dem vs Other Vote, for all of US then .
+
+
+```{r}
+USdem<-lm(data = model_data,Dem_Score_2016~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+ED_Score+Unempl)
+summary(USdem)
+USadem<-aov(data = model_data,Dem_Score_2016~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+ED_Score+Unempl)
+USadem
+
+USdemss<-lm(data = subset(model_data, Swing==1),Dem_Score_2016~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+ED_Score)
+summary(USdemss)
+USademss<-aov(data = subset(model_data, Swing==1),Dem_Score_2016~Per.Hispanic+Per.Afr.Am+Per.Male+MedAge+ED_Score)
+USademss
+
+### 3rd Party is extra!
+
+USoth<-lm(data = model_data,Oth_Score_2016~Per.Afr.Am+Per.Male+MedAge+ED_Score+Income)
+summary(USoth)
+USaoth<-aov(data = model_data,Oth_Score_2016~Per.Afr.Am+Per.Male+MedAge+ED_Score+Income)
+USaoth
+
+
+```
+
+
+
+Thank you!
