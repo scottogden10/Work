@@ -1,0 +1,47 @@
+DeptId,Dept Name,Category
+ALG,Allogeneic Bone Marrow Transplant,Medicine
+BMS,Breast Medicine,Medicine
+BRE,Breast Surgery,Surgery
+BRM,Breast Medicine,Medicine
+CRD,Cardiology,Medicine
+GEN,General Medicine,Medicine
+GHN,Head & Neck,Medicine
+GIA,GI Medicine,Medicine
+GIB,GI Medicine,Medicine
+GMO,GYN Med Onc,Medicine
+GMT,Gastric & Mixed Tumor,Surgery
+GUO,Genitourinary Oncology,Medicine
+GYN,Gynecology,Surgery
+HAT,Hematology,Medicine
+HEP,Hepatopancreatobiliary,Surgery
+HMS,Head & Neck,Medicine
+HNS,Head & Neck,Surgery
+ICA,ICU,Medicine
+ICB,ICU,Medicine
+ICU,ICU,Other
+LKA,Leukemia,Medicine
+LKB,Leukemia,Medicine
+LUN,Lung,Medicine
+LYG,Lymphoma,Medicine
+LYM,Lymphoma,Medicine
+LYR,Lymphoma,Medicine
+NEU,Neurology,Medicine
+NRS,Neuro Surgery,Surgery
+NUC,Nuclear Medicine,Other
+OPH,Ophthalmic Oncology,Surgery
+ORT,Orthopedic,Surgery
+PDB,Pediatrics,Pediatrics
+PDG,Pediatrics,Pediatrics
+PDP,Pediatrics,Pediatrics
+PDU,Pediatrics,Pediatrics
+PED,Pediatrics,Pediatrics
+PLA,Plastics,Surgery
+PPC,Pain and Palliative Care,Medicine
+RAD,Radiation Oncology,Other
+REC,Colorectal,Surgery
+SCU,Special Care Unit,Other
+THR,Thoracic,Surgery
+TRB,Transplant Blue,Medicine
+TRG,Transplant Green,Medicine
+TRW,Transplant White,Medicine
+URO,Urology,Surgery
